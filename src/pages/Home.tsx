@@ -10,8 +10,6 @@ import { GiThermometerHot, GiThermometerCold} from "react-icons/gi"
 
 import { Container, Map, RightSide,TopContainer,LeftSide, FormContainer, TitleContainer, ContentContainer, ContentCityName, ContentTemp, WeatherContainer, Icons, WindContent, MapContainer } from "../styles/StyledHome"
 
-const TOKEN_MAP = "pk.eyJ1IjoiYWR2YW5lciIsImEiOiJja2p1N3RibzUybngzMnluMHhmNDczdzdtIn0.GvTMiJAvpyzATgZWMC46Og"
-const TOKEN_CITY = "e2a99c8790msh90aed4d017ed0b2p129056jsna141f90f1eda"
 
 interface MapInterface{
     latitude: number,
@@ -54,7 +52,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
       const response = axios.get("https://community-open-weather-map.p.rapidapi.com/find?q=Recife&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=metric",
-      {headers: {"x-rapidapi-key": `${TOKEN_CITY}`,
+      {headers: {"x-rapidapi-key": `${process.env.REACT_APP_API_CITY}`,
       "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com"}}).then(response => {
         setViewport({
           latitude: response.data.list[0].coord.lat,
@@ -93,7 +91,7 @@ const Home: React.FC = () => {
       async function getLocation (): Promise<void>{
         
         const response = await axios.get(`https://community-open-weather-map.p.rapidapi.com/find?mode=null&lon=${marker.longitude}&type=link%2C%20accurate&lat=${marker.latitude}&units=metric`,
-        {headers: {"x-rapidapi-key": `${TOKEN_CITY}`,
+        {headers: {"x-rapidapi-key": `${process.env.REACT_APP_API_CITY}`,
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com"}})
 
         const city_data = response.data.list[0]
@@ -106,7 +104,7 @@ const Home: React.FC = () => {
         event.preventDefault()
 
         const response = await axios.get(`https://community-open-weather-map.p.rapidapi.com/find?q=${searchCity}&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=metric`,
-        {headers: {"x-rapidapi-key": `${TOKEN_CITY}`,
+        {headers: {"x-rapidapi-key": `${process.env.REACT_APP_API_MAP}`,
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com"}})
 
         const city_data = response.data.list[0]
@@ -139,7 +137,7 @@ const Home: React.FC = () => {
               </TopContainer>
                 <Map onTouchEnd={getLocation}>
                   <MapContainer>
-                      <ReactMapGL mapboxApiAccessToken={TOKEN_MAP}
+                      <ReactMapGL mapboxApiAccessToken={process.env.REACT_APP_API_MAP}
                       mapStyle={"mapbox://styles/mapbox/dark-v9"}
                       {...viewport}
                       width="100%%"
